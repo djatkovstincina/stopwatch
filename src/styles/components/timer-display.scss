@@ -1,0 +1,21 @@
+@use '../colors';
+
+.c-timer-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.75rem;
+  border-radius: 30px;
+  background: colors.$black-color;
+  user-select: none;
+
+  &--time {
+    font-size: 6rem;
+    color: colors.$white;
+  }
+
+  &--duration {
+    // margin-bottom: 0;
+    color: colors.$primary-color;
+  }
+}

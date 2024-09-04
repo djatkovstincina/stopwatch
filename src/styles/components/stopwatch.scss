@@ -1,0 +1,173 @@
+// Variables
+@use '../colors';
+@use '../mixins.scss';
+
+$transition-speed: 0.1s;
+
+// Clock styles
+.clock {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background: colors.$gray;
+  border: 20px solid colors.$black-color;
+  border-radius: 50%;
+  margin: 80px auto;
+}
+
+// Button styles
+.btn {
+  @include mixins.center-position(28px, 26px);
+  top: -30px;
+  background: colors.$black-color;
+  z-index: 19;
+  @include mixins.transform-origin(50%, 195px);
+}
+
+.right,
+.left {
+  top: -35px;
+  height: 16px;
+  margin-left: -14px;
+  @include mixins.transform-origin(50%, 185px);
+}
+
+.right {
+  transform: rotate(45deg);
+}
+
+.left {
+  transform: rotate(-45deg);
+}
+
+// Color button styles
+.pause-watch {
+  @include mixins.center-position(42px, 28px);
+  top: -50px;
+  background: colors.$blue-color;
+  border-radius: 5px;
+  z-index: 20;
+  cursor: pointer;
+  transition: all $transition-speed;
+}
+
+.start-watch,
+.stop-watch {
+  top: -60px;
+  margin-left: -21px;
+  width: 42px;
+  height: 28px;
+  border-radius: 5px;
+  z-index: 20;
+  cursor: pointer;
+  transition: all $transition-speed;
+  transform-origin: 50% 210px;
+}
+
+.start-watch {
+  background: colors.$red-color;
+  @include mixins.transform-origin(50%, 210px);
+}
+
+.stop-watch {
+  background: colors.$black-color;
+  @include mixins.transform-origin(50%, 210px);
+}
+
+// Button active states
+.pause-watch:active {
+  transform: translateX(-20px);
+}
+
+.start-watch:active {
+  transform: rotate(45deg) translateY(10px);
+}
+
+.stop-watch:active {
+  transform: rotate(-45deg) translateY(10px);
+}
+
+// Axis styles
+.axis {
+  @include mixins.center-position(20px, 20px);
+  background: colors.$black-color;
+  border-radius: 50%;
+  z-index: 10;
+
+  &.tiny {
+    width: 10px;
+    height: 10px;
+    background: colors.$gray;
+    z-index: 11;
+  }
+}
+
+// Second hand styles
+.second-hand {
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  margin-left: -3px;
+  width: 6px;
+  height: 160px;
+  background: colors.$primary-color;
+  border-radius: 3px;
+  z-index: 2;
+  @include mixins.transform-origin(center, 130px);
+  transform: rotate(0);
+  animation: secunda 60s linear infinite paused;
+}
+
+// Clock face styles
+.clock-face {
+  @include mixins.center-position(4px, 18px);
+  top: 10px;
+  background: colors.$black-color;
+  border-radius: 2px;
+  z-index: 1;
+  @include mixins.transform-origin(50%, 140px);
+}
+
+.seconds {
+  width: 2px;
+  height: 8px;
+}
+
+// Generate second markers using a loop
+@for $i from 1 through 60 {
+  .second-#{$i} {
+    transform: rotate(#{$i * 6}deg);
+  }
+}
+
+// Generate 5 second markers using a loop
+@for $i from 1 through 12 {
+  .clock-face-#{$i} {
+    transform: rotate(#{$i * 30}deg);
+  }
+}
+
+// Animation
+@keyframes secunda {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Input checked styles
+#start:checked~.second-hand {
+  animation-play-state: running;
+}
+
+#stop:checked~.second-hand {
+  animation-play-state: paused;
+}
+
+#reset:checked~.second-hand {
+  animation: none;
+}
