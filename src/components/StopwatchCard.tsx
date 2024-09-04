@@ -13,6 +13,22 @@ const StopwatchCard: React.FC<StopwatchCardProps> = ({ action }) => {
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const [reset, setReset] = useState<boolean>(false);
 
+    const handleStart = React.useCallback(() => {
+        setIsRunning(true);
+    }, []);
+    
+    const handlePause = React.useCallback(() => {
+        setIsRunning(false);
+    }, []);
+    
+    const handleReset = React.useCallback(() => {
+        setIsRunning(false);
+        setTimeElapsed(0);
+        setTargetDuration(0);
+        setReset(true);
+        setTimeout(() => setReset(false), 0);
+    }, []);
+
     useEffect(() => {
         let interval: NodeJS.Timeout | null = null;
         if (isRunning) {
@@ -22,7 +38,11 @@ const StopwatchCard: React.FC<StopwatchCardProps> = ({ action }) => {
         } else if (!isRunning && timeElapsed !== 0) {
             clearInterval(interval!);
         }
-        return () => clearInterval(interval!);
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
     }, [isRunning, timeElapsed]);
 
     useEffect(() => {
@@ -39,23 +59,7 @@ const StopwatchCard: React.FC<StopwatchCardProps> = ({ action }) => {
             default:
                 break;
         }
-    }, [action]);
-
-    const handleStart = () => {
-        setIsRunning(true);
-    };
-
-    const handlePause = () => {
-        setIsRunning(false);
-    };
-
-    const handleReset = () => {
-        setIsRunning(false);
-        setTimeElapsed(0);
-        setTargetDuration(0);
-        setReset(true);
-        setTimeout(() => setReset(false), 0);
-    };
+    }, [action, handleStart, handlePause, handleReset]);
 
     return (
         <div className="c-stopwatch--card">

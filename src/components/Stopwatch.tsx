@@ -9,7 +9,9 @@ const Stopwatch: React.FC<StopwatchProps> = ({ setAction }) => {
 
     const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.id as 'start' | 'stop' | 'reset';
-        setAction(value);
+        if (value) {
+            setAction(value);
+        }
     };
 
     return (
